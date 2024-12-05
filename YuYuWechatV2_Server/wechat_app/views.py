@@ -33,7 +33,7 @@ lock = threading.Lock()
 def process_queue():
     while True:
         try:
-            name, text, response_queue = message_queue.get()
+            name, text, at, response_queue = message_queue.get()
             try:
                 comtypes.CoInitialize()
                 with lock:  # 确保微信操作的线程安全
@@ -42,6 +42,8 @@ def process_queue():
                     response_queue.put({'status': 'Message sent', 'name': name})
                 else:
                     response_queue.put({'status': 'Failed to send message', 'name': name})
+                if at != "":
+                    wechat.at(name, at, False)
             except Exception as e:
                 response_queue.put({'status': 'Error sending message', 'name': name, 'error': str(e)})
             message_queue.task_done()
@@ -77,8 +79,11 @@ def send_message(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            at = ""
             name = data['name']
             text = data['text']
+            if "at" in data.keys():
+                at = data["at"]
 
             # 用于存储处理结果的队列
             response_queue = Queue()

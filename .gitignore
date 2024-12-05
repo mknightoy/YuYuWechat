@@ -1,3 +1,4 @@
+.DS_Store
 /.idea/
 YuYuWechatV2_Client/client_app/management/commands/Test_generate_message_checks.py
 YuYuWechatV2_Client/celerybeat-schedule.db

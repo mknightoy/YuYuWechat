@@ -86,8 +86,8 @@ class WeChat:
     def get_contact(self, name):
         self.open_wechat()
         self.get_wechat()
-
-        search_box = auto.EditControl(Depth=8, Name=self.lc.search)
+        wechat_window = self.get_wechat()
+        search_box = wechat_window.EditControl(Name=self.lc.search)
         click(search_box)
 
         pyperclip.copy(name)
