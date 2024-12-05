@@ -89,7 +89,7 @@ def send_message(request):
             response_queue = Queue()
 
             # 将消息加入队列
-            message_queue.put((name, text, response_queue))
+            message_queue.put((name, text, at, response_queue))
 
             # 等待处理结果
             result = response_queue.get()
